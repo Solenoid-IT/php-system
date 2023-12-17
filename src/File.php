@@ -35,7 +35,7 @@ class File extends Resource
 
 
         // (Calling the function)
-        parent::__construct( $path );        
+        parent::__construct( $path );
     }
 
     # Returns [File]

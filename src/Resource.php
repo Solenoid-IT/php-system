@@ -9,6 +9,7 @@ namespace Solenoid\System;
 class Resource
 {
     protected string $path;
+    protected bool   $temp;
 
 
 
@@ -17,6 +18,11 @@ class Resource
     {
         // (Getting the value)
         $this->path = $path;
+
+
+
+        // (Setting the value)
+        $this->temp = false;
     }
 
     # Returns [Resource]
@@ -322,6 +328,20 @@ class Resource
 
 
 
+    # Returns [self]
+    public function set_temp (bool $value = false)
+    {
+        // (Getting the value)
+        $this->temp = $value;
+
+
+
+        // Returning the value
+        return $this;
+    }
+
+
+
     # Returns [string]
     public function __toString ()
     {
@@ -332,6 +352,30 @@ class Resource
 
         // Returning the value
         return $resource ? $resource->get_path() : $this->get_path();
+    }
+
+
+
+    # Returns [void] | Throws [Exception]
+    public function __destruct ()
+    {
+        if ( $this->temp )
+        {// Value is true
+            if ( $this->exists() )
+            {// (Resource found)
+                if ( $this->remove() === false )
+                {// (Unable to remove the resource)
+                    // (Setting the value)
+                    $message = "Unable to remove the resource";
+
+                    // Throwing an exception
+                    throw new \Exception($message);
+
+                    // Returning the value
+                    return;
+                }
+            }
+        }
     }
 }
 
