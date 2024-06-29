@@ -97,6 +97,20 @@ class Process
             while ( pcntl_waitpid( 0, $status ) !== -1 );
         }
     }
+
+
+
+    # Returns [void]
+    public static function register_shutdown_callback (callable $function)
+    {
+        #declare(ticks = 1); // enable signal handling
+
+
+
+        // (Setting the handlers)
+        pcntl_signal( SIGINT, $function );  
+        pcntl_signal( SIGTERM, $function ); 
+    }
 }
 
 
