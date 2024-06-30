@@ -138,13 +138,19 @@ class Process
 
         foreach ( $lines as $line )
         {// Processing each entry
+            if ( trim($line) === '' ) continue;
+
+
+
             // (Incrementing the value)
             $counter += 1;
 
 
 
             // (Getting the value)
-            $columns = preg_split( '/\s+/', $line );
+            $columns = preg_split( '/\s+/', $line, 11 );
+
+
 
             if ( $counter === 1 )
             {// (Row contains a schema)
@@ -153,11 +159,19 @@ class Process
             }
             else
             {// (Row contains a record)
+                // (Setting the value)
+                $record = [];
+
                 foreach ( $columns as $k => $v )
                 {// Processing each entry
                     // (Getting the value)
-                    $records[ $schema[$k] ] = $v;
+                    $record[ $schema[$k] ] = $v;
                 }
+
+
+
+                // (Appending the value)
+                $records[] = $record;
             }
         }
 
@@ -165,6 +179,28 @@ class Process
 
         // Returning the value
         return $records;
+    }
+
+    # Returns [assoc|false]
+    public static function fetch_pid_info (int $pid)
+    {
+        // (Setting the value)
+        $pid = false;
+
+        foreach ( self::list() as $record )
+        {// Processing each entry
+            if ( $record['PID'] !== $pid ) continue;
+
+
+
+            // Returning the value
+            return $record;
+        }
+
+
+
+        // Returning the value
+        return $pid;
     }
 }
 
