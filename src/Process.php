@@ -7,12 +7,77 @@ namespace Solenoid\System;
 
 
 use \Solenoid\System\Stream;
-use \Solenoid\CSV\Parser as CSVParser;
 
 
 
 class Process
 {
+    # Returns [array<assoc>]
+    private static function csv_parse (string $content, string $line_separator = "\n", string $column_separator = ';', string $enclosure = '"', string $escape = "\\")
+    {
+        // (Getting the value)
+        $lines = explode( $line_separator, $content );
+
+
+
+        // (Setting the values)
+        $schema  = [];
+        $records = [];
+
+
+
+        // (Setting the value)
+        $count = 0;
+
+        foreach ( $lines as $line )
+        {// Processing each entry
+            // (Getting the value)
+            #$values = explode( $column_separator, $line );
+            $values = str_getcsv( $line, $column_separator, $enclosure, $escape );
+
+            if ( count($values) === 1 && strlen( $values[0] ) === 0 ) continue;
+
+
+
+            // (Incrementing the value)
+            $count += 1;
+
+            if ( $count === 1 )
+            {// (Line contains a schema)
+                // (Getting the value)
+                $schema = $values;
+            }
+            else
+            {// (Line contains a record)
+                // (Setting the value)
+                $record = [];
+
+                foreach ( $values as $k => $v )
+                {// Processing each entry
+                    # debug
+                    $record['count'] = $count;
+
+
+
+                    // (Getting the value)
+                    $record[ $schema[$k] ] = $v;
+                }
+
+                
+
+                // (Appending the value)
+                $records[] = $record;
+            }
+        }
+
+
+
+        // Returning the value
+        return $records;
+    }
+
+
+
     # Returns [string|false] | Throws [Exception]
     public static function read ()
     {
@@ -119,7 +184,7 @@ class Process
     public static function list ()
     {
         // Returning the value
-        return CSVParser::parse( shell_exec('ps aux'), "\n", ' ' );
+        return self::csv_parse( shell_exec('ps aux'), "\n", ' ' );
     }
 }
 

@@ -14,13 +14,11 @@
         }
     ],
     "require": {
-        "php": ">=7.3",
-        "php-csv": "^1.0.0"
+        "php": ">=7.3"
     },
     "autoload": {
         "psr-4": {
-            "Solenoid\\System\\": "src",
-            "Solenoid\\CSV\\": "src"
+            "Solenoid\\System\\": "src"
         }
     }
 }
