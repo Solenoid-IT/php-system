@@ -199,6 +199,27 @@ class Process
         // Returning the value
         return false;
     }
+
+
+
+    # Returns [int|false]
+    public static function start (string $cmd)
+    {
+        // (Executing the command)
+        $output = shell_exec("nohup $cmd >/dev/null 2>&1 & echo $!");
+
+        if ( $output === null || trim($output) === '' ) return false;
+
+
+
+        // (Getting the value)
+        $pid = (int) trim($output);
+
+
+
+        // Returning the value
+        return $pid;
+    }
 }
 
 
