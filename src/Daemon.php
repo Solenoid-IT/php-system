@@ -76,6 +76,11 @@ class Daemon
     # Returns [self]
     public function run (callable $function)
     {
+        // (Setting the time limit)
+        set_time_limit(0);
+
+
+
         // (Registering the handlers)
         pcntl_signal( SIGTERM, [ $this, 'signal_handler' ] );
         pcntl_signal( SIGHUP, [ $this, 'signal_handler' ] );
