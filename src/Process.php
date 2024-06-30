@@ -12,72 +12,6 @@ use \Solenoid\System\Stream;
 
 class Process
 {
-    # Returns [array<assoc>]
-    private static function csv_parse (string $content, string $line_separator = "\n", string $column_separator = ';', string $enclosure = '"', string $escape = "\\")
-    {
-        // (Getting the value)
-        $lines = explode( $line_separator, $content );
-
-
-
-        // (Setting the values)
-        $schema  = [];
-        $records = [];
-
-
-
-        // (Setting the value)
-        $count = 0;
-
-        foreach ( $lines as $line )
-        {// Processing each entry
-            // (Getting the value)
-            #$values = explode( $column_separator, $line );
-            $values = str_getcsv( $line, $column_separator, $enclosure, $escape );
-
-            if ( count($values) === 1 && strlen( $values[0] ) === 0 ) continue;
-
-
-
-            // (Incrementing the value)
-            $count += 1;
-
-            if ( $count === 1 )
-            {// (Line contains a schema)
-                // (Getting the value)
-                $schema = $values;
-            }
-            else
-            {// (Line contains a record)
-                // (Setting the value)
-                $record = [];
-
-                foreach ( $values as $k => $v )
-                {// Processing each entry
-                    # debug
-                    $record['count'] = $count;
-
-
-
-                    // (Getting the value)
-                    $record[ $schema[$k] ] = $v;
-                }
-
-                
-
-                // (Appending the value)
-                $records[] = $record;
-            }
-        }
-
-
-
-        // Returning the value
-        return $records;
-    }
-
-
-
     # Returns [string|false] | Throws [Exception]
     public static function read ()
     {
@@ -183,8 +117,54 @@ class Process
     # Returns [array<assoc>]
     public static function list ()
     {
+        // (Getting the value)
+        $raw = shell_exec('ps aux');
+
+
+
+        // (Getting the value)
+        $lines = explode( "\n", $raw );
+
+
+
+        // (Setting the values)
+        $schema  = [];
+        $records = [];
+
+
+
+        // (Setting the value)
+        $counter = 0;
+
+        foreach ( $lines as $line )
+        {// Processing each entry
+            // (Incrementing the value)
+            $counter += 1;
+
+
+
+            // (Getting the value)
+            $columns = preg_split( '/\s+/', $line );
+
+            if ( $counter === 1 )
+            {// (Row contains a schema)
+                // (Getting the value)
+                $schema = $columns;
+            }
+            else
+            {// (Row contains a record)
+                foreach ( $columns as $k => $v )
+                {// Processing each entry
+                    // (Getting the value)
+                    $records[ $schema[$k] ] = $v;
+                }
+            }
+        }
+
+
+
         // Returning the value
-        return self::csv_parse( shell_exec('ps aux'), "\n", ' ' );
+        return $records;
     }
 }
 
