@@ -184,9 +184,6 @@ class Process
     # Returns [assoc|false]
     public static function fetch_pid_info (int $pid)
     {
-        // (Setting the value)
-        $pid = false;
-
         foreach ( self::list() as $record )
         {// Processing each entry
             if ( $record['PID'] !== (string) $pid ) continue;
@@ -200,7 +197,7 @@ class Process
 
 
         // Returning the value
-        return $pid;
+        return false;
     }
 }
 
