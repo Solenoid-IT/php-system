@@ -189,7 +189,7 @@ class Process
 
         foreach ( self::list() as $record )
         {// Processing each entry
-            if ( $record['PID'] !== $pid ) continue;
+            if ( $record['PID'] !== (string) $pid ) continue;
 
 
 
