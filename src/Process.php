@@ -7,6 +7,7 @@ namespace Solenoid\System;
 
 
 use \Solenoid\System\Stream;
+use \Solenoid\CSV\Parser as CSVParser;
 
 
 
@@ -110,6 +111,15 @@ class Process
         // (Setting the handlers)
         pcntl_signal( SIGINT, $function );  
         pcntl_signal( SIGTERM, $function ); 
+    }
+
+
+
+    # Returns [array<assoc>]
+    public static function list ()
+    {
+        // Returning the value
+        return CSVParser::parse( shell_exec('ps aux'), "\n", ' ' );
     }
 }
 
