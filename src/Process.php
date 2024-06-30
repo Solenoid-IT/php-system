@@ -69,6 +69,15 @@ class Process
 
 
 
+    # Returns [void]
+    public static function kill (int $pid, int $signal = SIGTERM)
+    {
+        // (Executing the command)
+        echo shell_exec("kill -$signal $pid");
+    }
+
+
+
     # Returns [string|false] | Throws [Exception]
     public static function read ()
     {
