@@ -6,7 +6,7 @@ namespace Solenoid\System;
 
 
 
-class Service
+class Daemon
 {
     protected int  $refresh_interval;
 
