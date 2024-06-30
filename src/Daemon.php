@@ -74,7 +74,7 @@ class Daemon
     }
 
     # Returns [self]
-    public function run (callable $function)
+    public function run (callable $startup, callable $function)
     {
         // (Setting the time limit)
         set_time_limit(0);
@@ -91,6 +91,11 @@ class Daemon
 
         // (Setting the value)
         $this->running = true;
+
+
+
+        // (Calling the function)
+        $startup();
 
 
 
