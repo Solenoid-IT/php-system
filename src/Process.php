@@ -12,6 +12,63 @@ use \Solenoid\System\Stream;
 
 class Process
 {
+    public int $pid;
+
+
+
+    # Returns [self]
+    public function __construct (string $pid)
+    {
+        // (Getting the value)
+        $this->pid = $pid;        
+    }
+
+
+
+    # Returns [Process|false]
+    public static function start (string $cmd)
+    {
+        // (Executing the command)
+        $output = shell_exec("nohup $cmd >/dev/null 2>&1 & echo $!");
+
+        if ( $output === null || trim($output) === '' ) return false;
+
+
+
+        // (Getting the value)
+        $pid = (int) trim($output);
+
+
+
+        // Returning the value
+        return new Process($pid);
+    }
+
+    # Returns [self]
+    public function wait ()
+    {
+        while ( true )
+        {// Processing each clock
+            if ( self::fetch_pid_info( $this->pid ) === false )
+            {// (Process is not running)
+                // Returning the value
+                return $this;
+            }
+
+
+
+            // (Waiting for the time)
+            sleep(1);
+        }
+
+
+
+        // Returning the value
+        return $this;
+    }
+
+
+
     # Returns [string|false] | Throws [Exception]
     public static function read ()
     {
@@ -202,23 +259,11 @@ class Process
 
 
 
-    # Returns [int|false]
-    public static function start (string $cmd)
+    # Returns [string]
+    public function __toString ()
     {
-        // (Executing the command)
-        $output = shell_exec("nohup $cmd >/dev/null 2>&1 & echo $!");
-
-        if ( $output === null || trim($output) === '' ) return false;
-
-
-
-        // (Getting the value)
-        $pid = (int) trim($output);
-
-
-
         // Returning the value
-        return $pid;
+        return (string) $this->pid;
     }
 }
 
