@@ -59,6 +59,15 @@ class JDB
 
 
 
+    # Returns [assoc]
+    public function read ()
+    {
+        // Returning the value
+        return JDB::load( $this->file_path )->data;
+    }
+
+
+
     # Returns [self|false]
     public function save (bool $compress = false)
     {
