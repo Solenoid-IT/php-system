@@ -15,6 +15,10 @@ class Daemon
 
 
 
+    public int     $startup_ts;
+
+
+
     # Returns [self]
     private function signal_handler ($signal)
     {
@@ -74,7 +78,7 @@ class Daemon
     }
 
     # Returns [self]
-    public function run (callable $startup, callable $function)
+    public function run (callable $startup, callable $tick)
     {
         // (Setting the time limit)
         set_time_limit(0);
@@ -94,6 +98,9 @@ class Daemon
 
 
 
+        // (Getting the value)
+        $this->startup_ts = time();
+
         // (Calling the function)
         $startup();
 
@@ -105,7 +112,7 @@ class Daemon
             while ( $this->running )
             {
                 // (Calling the function)
-                $function();
+                $tick();
 
 
 
