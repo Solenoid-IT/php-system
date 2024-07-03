@@ -94,6 +94,24 @@ class JDB
         // Returning the value
         return $this->save();
     }
+
+
+
+    # Returns [bool]
+    public function exists ()
+    {
+        // Returning the value
+        return file_exists( $this->file_path );
+    }
+
+
+
+    # Returns [string]
+    public function __toString ()
+    {
+        // Returning the value
+        return json_encode( $this->data );
+    }
 }
 
 
