@@ -104,6 +104,13 @@ class JDB
         return file_exists( $this->file_path );
     }
 
+    # Returns [bool]
+    public function remove ()
+    {
+        // Returning the value
+        return unlink( $this->file_path );
+    }
+
 
 
     # Returns [string]
