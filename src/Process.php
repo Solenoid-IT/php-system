@@ -25,6 +25,15 @@ class Process
 
 
 
+    # Returns [string|null]
+    public static function run (string $cmd)
+    {
+        // Returning the value
+        return shell_exec($cmd);
+    }
+
+
+
     # Returns [Process|false]
     public static function start (string $cmd)
     {
