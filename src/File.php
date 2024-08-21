@@ -213,7 +213,7 @@ class File extends Resource
         if ( file_put_contents( $this->path, $content, $mode === 'replace' ? 0 : FILE_APPEND) === false )
         {// (Unable to write content to the file)
             // (Setting the value)
-            $message = "Unable to write content to the file";
+            $message = "Unable to write content to the file '$this->path'";
 
             // Throwing an exception
             throw new \Exception($message);
