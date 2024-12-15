@@ -188,14 +188,14 @@ class File extends Resource
     }
 
     # Returns [File|false] | Throws [Exception]
-    public function write (string $content = '', string $mode = 'replace')
+    public function write (string $content = '', string $mode = 'replace', ?int $umask = null)
     {
         // (Getting the value)
         $directory = $this->fetch_parent();
 
         if ( !$directory->exists() )
         {// (Directory not found)
-            if ( !$directory->make() )
+            if ( !$directory->make( $umask ) )
             {// (Unable to make the directory)
                 // (Setting the value)
                 $message = "Unable to make the directory";

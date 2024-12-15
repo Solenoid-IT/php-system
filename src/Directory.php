@@ -129,8 +129,10 @@ class Directory extends Resource
 
 
     # Returns [self|false] | Throws [Exception]
-    public function make ()
+    public function make (?int $umask = null)
     {
+        /*
+
         // (Getting the value)
         $path_esa = escapeshellarg( $this->normalize()->get_path() );
 
@@ -154,6 +156,41 @@ class Directory extends Resource
 
             // Returning the value
             return false;
+        }
+
+        */
+
+
+
+        if ( $umask !== null )
+        {// Value found
+            // (Setting the umask)
+            $current_umask = umask( $umask );
+        }
+
+
+
+        // (Getting the value)
+        $folder_path = $this->normalize()->get_path();
+
+        if ( !mkdir( $folder_path, 0777, true ) )
+        {// (Unable to make the directory)
+            // (Setting the value)
+            $message = "Unable to make the directory '$folder_path'";
+
+            // Throwing an exception
+            throw new \Exception($message);
+
+            // Returning the value
+            return false;
+        }
+
+
+
+        if ( $umask !== null )
+        {// Value found
+            // (Setting the umask)
+            umask( $current_umask );
         }
 
 
