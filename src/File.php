@@ -210,6 +210,14 @@ class File extends Resource
 
 
 
+        if ( $umask !== null )
+        {// Value found
+            // (Setting the umask)
+            $current_umask = umask( $umask );
+        }
+
+
+
         if ( file_put_contents( $this->path, $content, $mode === 'replace' ? 0 : FILE_APPEND) === false )
         {// (Unable to write content to the file)
             // (Setting the value)
@@ -220,6 +228,14 @@ class File extends Resource
 
             // Returning the value
             return false;
+        }
+
+
+
+        if ( $umask !== null )
+        {// Value found
+            // (Setting the umask)
+            umask( $current_umask );
         }
 
 
