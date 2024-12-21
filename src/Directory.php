@@ -243,17 +243,39 @@ class Directory extends Resource
 
 
         // (Getting the value)
-        $path_esa = escapeshellarg( $this->path ) . '/*';
+        $path_esa = escapeshellarg( $this->path );
 
 
 
         // (Executing the command)
-        $result = shell_exec("rm -rf $path_esa 2>&1");
+        $result = shell_exec( "rm -rf $path_esa/* 2>&1" );
 
         if ( $result !== null )
         {// (Unable to remove nested resources)
             // (Getting the value)
-            $result = str_replace( "\n", ' >> ', $result );
+            $result = str_replace( "\n", '\\n', $result );
+
+
+
+            // (Setting the value)
+            $message = "Unable to remove nested resources :: `$result`";
+
+            // Throwing an exception
+            throw new \Exception($message);
+
+            // Returning the value
+            return false;
+        }
+
+
+
+        // (Executing the command)
+        $result = shell_exec( "rm -rf $path_esa/.* 2>&1" );
+
+        if ( $result !== null )
+        {// (Unable to remove nested resources)
+            // (Getting the value)
+            $result = str_replace( "\n", '\\n', $result );
 
 
 
